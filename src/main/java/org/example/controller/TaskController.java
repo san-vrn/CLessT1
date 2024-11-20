@@ -3,7 +3,6 @@ package org.example.controller;
 import org.example.entity.Task;
 import org.example.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,43 +19,25 @@ public class TaskController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Task>> getAllTasks(
-    ){
-        return ResponseEntity.ok(taskService.findAllTask());
-    }
+    public List<Task> getAllTasks(){return taskService.findAllTask();}
 
 
     @GetMapping("/{task_id}")
-    public ResponseEntity<Task> getTask(
-            @PathVariable("task_id") Long taskId
-    ){
-        return ResponseEntity.ok(taskService.findById(taskId));
-    }
+    public Task getTask(@PathVariable("task_id") Long taskId){return taskService.findById(taskId);}
 
 
     @PostMapping
-    public ResponseEntity<Task> saveTask(
-            @RequestBody Task task
-    ){
-        return ResponseEntity.ok(taskService.saveTask(task));
-    }
-
+    public Task saveTask(@RequestBody Task task){return taskService.saveTask(task);}
 
     @PutMapping("/{task_id}")
-    public ResponseEntity<Task> updateTask(
+    public Task updateTask(
             @RequestBody Task task,
             @PathVariable("task_id") Long taskId
-    ){
-        return ResponseEntity.ok(taskService.updateTask(task,taskId));
-    }
+    ){return taskService.updateTask(task,taskId);}
 
 
     @DeleteMapping("/{task_id}")
-    public ResponseEntity<Task> deleteTask(
+    public Task deleteTask(
             @PathVariable("task_id") Long taskId
-    ){
-        return ResponseEntity.ok(taskService.deleteTask(taskId));
-    }
-
-
+    ){return taskService.deleteTask(taskId);}
 }
