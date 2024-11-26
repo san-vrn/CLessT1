@@ -8,6 +8,8 @@ public class TaskServiceException extends RuntimeException{
         this.message = message;
     }
 
+    public TaskServiceException(String message){this.message=message;}
+
     @Override
     public String getMessage() {
         return this.message;
