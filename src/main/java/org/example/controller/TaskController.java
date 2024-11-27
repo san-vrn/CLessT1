@@ -1,6 +1,7 @@
 package org.example.controller;
 
-import org.example.entity.Task;
+import org.example.dto.TaskDto;
+import org.example.entity.task.Task;
 import org.example.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,25 +20,25 @@ public class TaskController {
     }
 
     @GetMapping
-    public List<Task> getAllTasks(){return taskService.findAllTask();}
+    public List<TaskDto> getAllTasks(){return taskService.findAllTask();}
 
 
     @GetMapping("/{task_id}")
-    public Task getTask(@PathVariable("task_id") Long taskId){return taskService.findById(taskId);}
+    public TaskDto getTask(@PathVariable("task_id") Long taskId){return taskService.findById(taskId);}
 
 
     @PostMapping
-    public Task saveTask(@RequestBody Task task){return taskService.saveTask(task);}
+    public TaskDto saveTask(@RequestBody TaskDto task){return taskService.saveTask(task);}
 
     @PutMapping("/{task_id}")
-    public Task updateTask(
-            @RequestBody Task task,
+    public TaskDto updateTask(
+            @RequestBody TaskDto task,
             @PathVariable("task_id") Long taskId
     ){return taskService.updateTask(task,taskId);}
 
 
     @DeleteMapping("/{task_id}")
-    public Task deleteTask(
+    public TaskDto deleteTask(
             @PathVariable("task_id") Long taskId
     ){return taskService.deleteTask(taskId);}
 }
