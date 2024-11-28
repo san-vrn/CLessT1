@@ -1,3 +1,10 @@
+app:
+  kafka:
+    task_topic: task-topic
+    group_id: class-t1-group-id
+    host: localhost
+    port: 9092
+
 spring:
   jpa:
     database: postgresql
@@ -12,3 +19,34 @@ spring:
     driver-class-name: org.postgresql.Driver
     tomcat:
       max-active: 250
+
+  kafka:
+    bootstrap-servers: ${app.kafka.host}:${app.kafka.port}
+    listener:
+      type: batch
+      ack-mode: manual
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      spring:
+        json:
+          add:
+            type:
+              headers: true
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      group-id: ${app.kafka.group-id}
+      properties:
+        spring.json.trusted.packages: "org.example**"
+
+  mail:
+    host: smtp.yandex.ru
+    port: 465
+    username: ${mail_username}
+    password: ${mail_password}
+    properties:
+      mail.smtp.auth: true
+      mail.starttls.enable: true
+      mail.smtp.socketFactory.class: javax.net.ssl.SSLSocketFactory
+      mail.smtp.ssl.enable: true

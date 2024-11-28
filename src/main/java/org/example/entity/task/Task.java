@@ -1,11 +1,8 @@
-package org.example.entity;
+package org.example.entity.task;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Objects;
 
@@ -13,7 +10,9 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity
+@Table(name = "task")
 public class Task {
 
     @Id
@@ -28,6 +27,10 @@ public class Task {
 
     @Column
     private long userId;
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    private TaskStatus status;
 
 
     @Override
