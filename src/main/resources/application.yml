@@ -22,6 +22,9 @@ spring:
 
   kafka:
     bootstrap-servers: ${app.kafka.host}:${app.kafka.port}
+    listener:
+      type: batch
+      ack-mode: manual
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer

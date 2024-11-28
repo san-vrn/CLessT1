@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class EmailService {
 
-    @Autowired
     private JavaMailSender emailSender;
     @Value("${email_to}")
     private String emailTo;
@@ -24,13 +23,19 @@ public class EmailService {
     private String userFrom;
     private static final Logger logger = LoggerFactory.getLogger(EmailService.class);
 
+    @Autowired
+    public EmailService(JavaMailSender emailSender) {
+        this.emailSender = emailSender;
+    }
+
     @LogThrowing
-    public void sendSimpleMessage(String text) {
+    public void sendSimpleMessage(String messageBody, String messageSubject) {
         try {
             SimpleMailMessage message = new SimpleMailMessage();
             message.setFrom(userFrom);
             message.setTo(emailTo);
-            message.setText(text);
+            message.setSubject(messageSubject);
+            message.setText(messageBody);
             emailSender.send(message);
             logger.info("Email sent successfully :{}", message);
         } catch (MailSendException e) {

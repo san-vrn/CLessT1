@@ -15,12 +15,9 @@ public class NotificationService {
     private static final Logger logger = LoggerFactory.getLogger(NotificationService.class);
 
     public void processMessage(ConsumerRecord<String, TaskDto> consumerRecord) {
-        if(consumerRecord.value()==null || consumerRecord.value().getTitle()==null ){
-            logger.warn("Получено пустое сообщение в Kafka: {}", consumerRecord);
-            return;
-        }
         TaskDto message = consumerRecord.value();
-        emailService.sendSimpleMessage("Задча обновилась, новый статус задачи: " + message.getStatus());
+        emailService.sendSimpleMessage("Задача обновилась, новый статус задачи: " + message.getStatus()
+                , "Задача " + message.getTitle()+ " обновлена");
         logger.info("новое сообщение в топике:{}", message);
     }
 }

@@ -64,14 +64,17 @@ public class TaskService {
     @LogThrowing
     @LogExecution
     public TaskDto updateTask(TaskDto updateTask, Long id){
+
         if (id == null){throw new TaskServiceException("Передан null id");}
         if(updateTask == null){throw new TaskServiceException("Передан null task");}
+
         try {
             Task task = taskRepository.findById(id).orElseThrow(() -> new TaskResourceNotFoundException(id));
-            if(!task.getStatus().equals(updateTask.getStatus())){kafkaTaskProducer.send(updateTask);}
+            TaskStatus taskStatus = task.getStatus();
             task = taskMapper.toEntity(updateTask);
             task.setId(id);
             taskRepository.save(task);
+            if(!task.getStatus().equals(taskStatus)){kafkaTaskProducer.send(updateTask);}
             return updateTask;
         }catch (TaskResourceNotFoundException exception){
             throw exception;
