@@ -1,6 +1,6 @@
 package org.example.kafka;
 
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.example.dto.TaskDto;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Slf4j
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Component
 public class KafkaTaskConsumer {
 

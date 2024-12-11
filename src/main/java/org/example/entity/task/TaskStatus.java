@@ -1,8 +1,8 @@
 package org.example.entity.task;
 
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
 public enum TaskStatus {
     NEW,
     IN_PROGRESS,

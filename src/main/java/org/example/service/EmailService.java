@@ -1,7 +1,6 @@
 package org.example.service;
 
-import lombok.RequiredArgsConstructor;
-import org.example.aspect.LogThrowing;
+import lombok.AllArgsConstructor;
 import org.example.exception.email.EmailServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,8 +10,9 @@ import org.springframework.mail.MailSendException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
+import org.starter.example.annotation.LogThrowing;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Component
 public class EmailService {
 
