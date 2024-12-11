@@ -13,8 +13,11 @@ import org.example.entity.task.TaskStatus;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TaskDto {
+
+    private Long id;
 
     private String title;
 

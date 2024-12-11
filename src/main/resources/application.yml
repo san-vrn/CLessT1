@@ -5,6 +5,19 @@ app:
     host: localhost
     port: 9092
 
+custom-logging:
+  enabled: true
+  level: INFO
+
+security:
+  jwt:
+    secret-key: ${JWT_secret_key}
+    expiration: 3600000
+    refresh-token:
+      expiration: 7776000000
+
+debug: true
+
 spring:
   jpa:
     database: postgresql
