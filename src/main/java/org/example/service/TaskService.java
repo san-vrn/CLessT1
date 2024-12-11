@@ -1,7 +1,7 @@
 package org.example.service;
 
-import org.example.aspect.LogExecution;
-import org.example.aspect.LogThrowing;
+import lombok.AllArgsConstructor;
+import org.example.auditing.ApplicationAuditAware;
 import org.example.dto.TaskDto;
 import org.example.entity.task.Task;
 import org.example.entity.task.TaskStatus;
@@ -10,36 +10,31 @@ import org.example.exception.task.TaskServiceException;
 import org.example.kafka.KafkaTaskProducer;
 import org.example.repository.TaskRepository;
 import org.example.util.TaskMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.starter.example.annotation.LogExecution;
+import org.starter.example.annotation.LogThrowing;
 
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class TaskService {
 
     private final TaskRepository taskRepository;
     private final KafkaTaskProducer kafkaTaskProducer;
     private final TaskMapper taskMapper;
-
-    @Autowired
-    public TaskService(TaskRepository taskRepository, KafkaTaskProducer kafkaTaskProducer, TaskMapper taskMapper) {
-        this.taskRepository = taskRepository;
-        this.kafkaTaskProducer = kafkaTaskProducer;
-        this.taskMapper = taskMapper;
-    }
+    private final ApplicationAuditAware applicationAuditAware;
 
     @LogThrowing
     @LogExecution
     public TaskDto saveTask(TaskDto task){
-       try {
-           task.setStatus(TaskStatus.NEW);
-           taskRepository.save(taskMapper.toEntity(task));
-           return task;
-       }
-       catch (Exception e){
-           throw new TaskServiceException("Ошибка при сохранении задачи", e);
-       }
+        try {
+            task.setStatus(TaskStatus.NEW);
+            return taskMapper.toDto(taskRepository.save(taskMapper.toEntity(task, applicationAuditAware.getCurrentUser())));
+        }
+        catch (Exception e){
+            throw new TaskServiceException("Ошибка при сохранении задачи", e);
+        }
     }
 
     @LogThrowing
@@ -71,7 +66,7 @@ public class TaskService {
         try {
             Task task = taskRepository.findById(id).orElseThrow(() -> new TaskResourceNotFoundException(id));
             TaskStatus taskStatus = task.getStatus();
-            task = taskMapper.toEntity(updateTask);
+            task = taskMapper.toEntity(updateTask, applicationAuditAware.getCurrentUser());
             task.setId(id);
             taskRepository.save(task);
             if(!task.getStatus().equals(taskStatus)){kafkaTaskProducer.send(updateTask);}

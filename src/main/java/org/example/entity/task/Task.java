@@ -3,6 +3,7 @@ package org.example.entity.task;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.example.entity.user.User;
 
 import java.util.Objects;
 
@@ -26,11 +27,12 @@ public class Task {
     private String description;
 
     @Column
-    private long userId;
-
-    @Column
     @Enumerated(EnumType.STRING)
     private TaskStatus status;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
 
     @Override
